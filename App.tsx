@@ -1,20 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import { SplashScreen } from './src/screens/SplashScreen';
+import { RootNavigator } from './src/navigation/RootNavigator';
+import { CoinProvider } from './src/context/CoinContext';
+import { CoinStoreModal } from './src/components/CoinStoreModal';
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <CoinProvider>
+        {showSplash ? (
+          <SplashScreen onFinish={() => setShowSplash(false)} />
+        ) : (
+          <NavigationContainer>
+            <RootNavigator />
+          </NavigationContainer>
+        )}
+        <CoinStoreModal />
+      </CoinProvider>
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
